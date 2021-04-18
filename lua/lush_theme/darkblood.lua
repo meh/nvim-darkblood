@@ -13,27 +13,6 @@
 --  "Y8P"  "Y888888P'"Y88P"`Y8P' "YY8P8P88P     `Y8
 --
 
--- This is a starter colorscheme for use with Lush,
--- for usage guides, see :h lush or :LushRunTutorial
-
---
--- Note: Because this is lua file, vim will append your file to the runtime,
---       which means you can require(...) it in other lua code (this is useful),
---       but you should also take care not to conflict with other libraries.
---
---       (This is a lua quirk, as it has somewhat poor support for namespacing.)
---
---       Basically, name your file,
---
---       "super_theme/lua/lush_theme/super_theme_dark.lua",
---
---       not,
---
---       "super_theme/lua/dark.lua".
---
---       With that caveat out of the way...
---
-
 -- Enable lush.ify on this file, run:
 --
 --  `:Lushify`
@@ -45,28 +24,37 @@
 local lush = require('lush')
 local hsl = lush.hsl
 
+local gray = {
+  [100] = hsl('#f5f5f5'),
+  [200] = hsl('#eeeeee'),
+  [300] = hsl('#e0e0e0'),
+  [350] = hsl('#D9D9D9'),
+  [400] = hsl('#C8C8C8'),
+  [500] = hsl('#9B9B9B'),
+  [600] = hsl('#6F6F6F'),
+  [650] = hsl('#656565'),
+  [700] = hsl('#3E3E3E'),
+  [750] = hsl('#353535'),
+  [800] = hsl('#2C2C2C'),
+  [850] = hsl('#242424'),
+  [900] = hsl('#1D1D1D'),
+  [950] = hsl('#0e0e0e')
+}
+
+local white = hsl('#ffffff')
+local black = hsl('#000000')
+local accent = hsl('#b21818')
+
 local theme = lush(function()
   return {
-    -- The following are all the Neovim default highlight groups from the docs
-    -- as of 0.5.0-nightly-446, to aid your theme creation. Your themes should
-    -- probably style all of these at a bare minimum.
-    --
-    -- Referenced/linked groups must come before being referenced/lined,
-    -- so the order shown ((mostly) alphabetical) is likely
-    -- not the order you will end up with.
-    --
-    -- You can uncomment these and leave them empty to disable any
-    -- styling for that group (meaning they mostly get styled as Normal)
-    -- or leave them commented to apply vims default colouring or linking.
-
-    -- Comment      { }, -- any comment
+    Comment      { fg = gray[650] }, -- any comment
     -- ColorColumn  { }, -- used for the columns set with 'colorcolumn'
     -- Conceal      { }, -- placeholder characters substituted for concealed text (see 'conceallevel')
     -- Cursor       { }, -- character under the cursor
     -- lCursor      { }, -- the character under the cursor when |language-mapping| is used (see 'guicursor')
     -- CursorIM     { }, -- like Cursor, but used when in IME mode |CursorIM|
-    -- CursorColumn { }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
-    -- CursorLine   { }, -- Screen-line at the cursor, when 'cursorline' is set.  Low-priority if foreground (ctermfg OR guifg) is not set.
+    CursorColumn { bg = gray[900] }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
+    CursorLine   { bg = gray[900] }, -- Screen-line at the cursor, when 'cursorline' is set.  Low-priority if foreground (ctermfg OR guifg) is not set.
     -- Directory    { }, -- directory names (and other special names in listings)
     -- DiffAdd      { }, -- diff mode: Added line |diff.txt|
     -- DiffChange   { }, -- diff mode: Changed line |diff.txt|
@@ -76,23 +64,23 @@ local theme = lush(function()
     -- TermCursor   { }, -- cursor in a focused terminal
     -- TermCursorNC { }, -- cursor in an unfocused terminal
     -- ErrorMsg     { }, -- error messages on the command line
-    -- VertSplit    { }, -- the column separating vertically split windows
-    -- Folded       { }, -- line used for closed folds
-    -- FoldColumn   { }, -- 'foldcolumn'
-    -- SignColumn   { }, -- column where |signs| are displayed
+    Split        { bg = black }, -- the column separating vertically split windows
+    Folded       { bg = gray[900] }, -- line used for closed folds
+    FoldColumn   { }, -- 'foldcolumn'
+    SignColumn   { }, -- column where |signs| are displayed
     -- IncSearch    { }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
     -- Substitute   { }, -- |:substitute| replacement text highlighting
-    -- LineNr       { }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
-    -- CursorLineNr { }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
+    LineNr       { fg = gray[700] }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+    CursorLineNr { fg = gray[600] }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
     -- MatchParen   { }, -- The character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
     -- ModeMsg      { }, -- 'showmode' message (e.g., "-- INSERT -- ")
     -- MsgArea      { }, -- Area for messages and cmdline
     -- MsgSeparator { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     -- MoreMsg      { }, -- |more-prompt|
     -- NonText      { }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
-    -- Normal       { }, -- normal text
+    Normal       { bg = gray[950], fg = gray[400] }, -- normal text
     -- NormalFloat  { }, -- Normal text in floating windows.
-    -- NormalNC     { }, -- normal text in non-current windows
+    NormalNC     { bg = black }, -- normal text in non-current windows
     -- Pmenu        { }, -- Popup menu: normal item.
     -- PmenuSel     { }, -- Popup menu: selected item.
     -- PmenuSbar    { }, -- Popup menu: scrollbar.
@@ -101,7 +89,7 @@ local theme = lush(function()
     -- QuickFixLine { }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
     -- Search       { }, -- Last search pattern highlighting (see 'hlsearch').  Also used for similar items that need to stand out.
     -- SpecialKey   { }, -- Unprintable characters: text displayed differently from what it really is.  But not 'listchars' whitespace. |hl-Whitespace|
-    -- SpellBad     { }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise. 
+    -- SpellBad     { }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
     -- SpellCap     { }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
     -- SpellLocal   { }, -- Word that is recognized by the spellchecker as one that is used in another region. |spell| Combined with the highlighting used otherwise.
     -- SpellRare    { }, -- Word that is recognized by the spellchecker as one that is hardly ever used.  |spell| Combined with the highlighting used otherwise.
@@ -130,45 +118,44 @@ local theme = lush(function()
     -- Boolean        { }, --  a boolean constant: TRUE, false
     -- Float          { }, --    a floating point constant: 2.3e10
 
-    -- Identifier     { }, -- (preferred) any variable name
-    -- Function       { }, -- function name (also: methods for classes)
+    Identifier     { fg = white }, -- (preferred) any variable name
+    Function       { fg = white }, -- function name (also: methods for classes)
 
-    -- Statement      { }, -- (preferred) any statement
+    Statement      { fg = white, gui = "bold" }, -- (preferred) any statement
     -- Conditional    { }, --  if, then, else, endif, switch, etc.
     -- Repeat         { }, --   for, do, while, etc.
     -- Label          { }, --    case, default, etc.
     -- Operator       { }, -- "sizeof", "+", "*", etc.
-    -- Keyword        { }, --  any other keyword
+    -- Keyword        { fg = white }, --  any other keyword
     -- Exception      { }, --  try, catch, throw
 
-    -- PreProc        { }, -- (preferred) generic Preprocessor
+    PreProc        { fg = gray[200] }, -- (preferred) generic Preprocessor
     -- Include        { }, --  preprocessor #include
     -- Define         { }, --   preprocessor #define
     -- Macro          { }, --    same as Define
     -- PreCondit      { }, --  preprocessor #if, #else, #endif, etc.
 
-    -- Type           { }, -- (preferred) int, long, char, etc.
+    Type           { fg = accent }, -- (preferred) int, long, char, etc.
     -- StorageClass   { }, -- static, register, volatile, etc.
     -- Structure      { }, --  struct, union, enum, etc.
     -- Typedef        { }, --  A typedef
 
-    -- Special        { }, -- (preferred) any special symbol
+    Special        { fg = accent }, -- (preferred) any special symbol
     -- SpecialChar    { }, --  special character in a constant
     -- Tag            { }, --    you can use CTRL-] on this
     -- Delimiter      { }, --  character that needs attention
     -- SpecialComment { }, -- special things inside a comment
     -- Debug          { }, --    debugging statements
 
-    -- Underlined { gui = "underline" }, -- (preferred) text that stands out, HTML links
-    -- Bold       { gui = "bold" },
-    -- Italic     { gui = "italic" },
+    Underlined { gui = "underline" }, -- (preferred) text that stands out, HTML links
+    Bold       { gui = "bold" },
+    Italic     { gui = "italic" },
 
     -- ("Ignore", below, may be invisible...)
-    -- Ignore         { }, -- (preferred) left blank, hidden  |hl-Ignore|
+    Ignore         { fg = black, bg = black }, -- (preferred) left blank, hidden  |hl-Ignore|
 
-    -- Error          { }, -- (preferred) any erroneous construct
-
-    -- Todo           { }, -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+    Error          { bg = accent, fg = white, gui = "bold" }, -- (preferred) any erroneous construct
+    Todo           { fg = accent, bg = black, gui = "bold" }, -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
     -- These groups are for the native LSP client. Some other LSP clients may
     -- use these groups, or use their own. Consult your LSP client's
